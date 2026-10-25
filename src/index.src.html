@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#EEE9DF">
+<meta name="description" content="ExamiQ: learn by predicting, experimenting, observing, recalling and applying ideas to new situations.">
+<title>ExamiQ — Explore the Learning Universe</title>
+<style>
+/* ExamiQ · Layer 1 (homepage) · KINETIC MATTER. Fonts: SIL Open Font License 1.1, embedded so the page needs no network. */
+/*__FONTS__*/
+/*__BASE__*/
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:0 28px;align-items:end;padding:44px 0 30px;position:relative}
+.hero-copy{grid-column:1 / span 6;position:relative;z-index:2}
+.hero h1{text-wrap:balance;margin:16px 0 0;font-family:var(--display);font-weight:400;font-size:clamp(56px,7.3vw,112px);line-height:.86;letter-spacing:-.035em}
+.gradient{display:block;font-style:italic;padding-left:.6em;color:var(--ink)}
+.hero p{margin:22px 0 0;max-width:40ch;font-size:19px;line-height:1.5;color:var(--ink-2)}
+
+/* search: results are real links or clearly marked "coming soon" */
+.search{max-width:540px;margin-top:28px}
+.searchbox{display:flex;align-items:center;gap:12px;padding:6px 0 6px 2px;border-bottom:2px solid var(--ink)}
+.searchbox svg{width:20px;flex:none;color:var(--ink)}
+.searchbox input{min-width:0;flex:1;background:transparent;border:0;color:var(--ink);font:inherit;font-size:17px;padding:10px 4px}
+.searchbox input::placeholder{color:var(--ink-3)}
+.searchbox input::-webkit-search-cancel-button{cursor:pointer}
+.results{list-style:none;margin:0;padding:0;border-bottom:1px solid var(--ink)}
+.results[hidden]{display:none}
+.results li{border-top:1px solid var(--rule)}
+.results li:first-child{border-top:0}
+.result{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:4px 14px;width:100%;padding:11px 4px;background:transparent;border:0;border-radius:0;color:var(--ink);text-align:left;text-decoration:none;font:inherit;cursor:pointer}
+.result{transition:background-color 140ms ease}
+.result:hover,.result:focus-visible{background:var(--paper-hi)}
+.result b{font-family:var(--display);font-weight:400;font-size:24px;line-height:1.05}
+.result .r-type{grid-column:1;font-family:var(--label);font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.result .r-state{grid-column:2;grid-row:1 / span 2;align-self:center;font-family:var(--label);font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+a.result .r-state{color:var(--ink);box-shadow:inset 0 -7px 0 var(--lime)}
+.search-status{min-height:1.4em;margin-top:10px;font-family:var(--mono);font-size:13px;color:var(--ink-3)}
+
+/* The "universe" is a launch plate: one launch point, four real parabolas, each carrying a subject. */
+.universe{grid-column:7 / span 6;position:relative;width:100%;aspect-ratio:600 / 400;height:auto;align-self:end;container-type:inline-size}
+.universe svg.plate{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.plate .ground{stroke:var(--ink);stroke-width:1.2}
+.plate .tick{stroke:var(--ink);stroke-width:1}
+.plate .path{fill:none;stroke:var(--ink);stroke-width:1.1;stroke-dasharray:3 6;opacity:.55;transition:opacity .2s,stroke-width .2s}
+.plate .path.live{stroke:var(--orange-line);stroke-width:2.4;stroke-dasharray:none;opacity:1}
+.plate .path.is-hot{opacity:1;stroke-width:2.4}
+.plate .dot{fill:var(--paper-hi);stroke:var(--ink);stroke-width:1.2}
+.plate .vec{stroke:var(--cobalt);stroke-width:2}
+.plate .drop{stroke:var(--ink);stroke-width:1;stroke-dasharray:2 3}
+.plate .note{font-family:var(--display);font-style:italic;font-size:16px;fill:var(--ink-2)}
+.plate .mono{font-family:var(--mono);font-size:12px;fill:var(--ink-3)}
+.plate .ball{fill:var(--paper-hi);stroke:var(--ink);stroke-width:1.4}
+.plate .ball.live{fill:var(--orange)}
+.plate .strobe{transition:opacity 180ms ease}
+/* each subject's rule draws in when its ball reaches the apex (motion only; static borders otherwise) */
+html.motion .planet{border-bottom-color:transparent}
+html.motion .planet[data-align="below"]{border-top-color:transparent}
+html.motion .planet::after{content:"";position:absolute;left:0;right:0;bottom:-1.5px;height:1.5px;background:var(--ink);transform:scaleX(0);transform-origin:var(--o,50%) 50%;transition:transform 520ms cubic-bezier(.2,.7,.2,1)}
+html.motion .planet.p1::after{height:2.5px;bottom:-2.5px;background:var(--orange-line)}
+html.motion .planet[data-align="below"]::after{top:-1.5px;bottom:auto}
+html.motion .planet.lit::after{transform:none}
+.core{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--orange);border:1.5px solid var(--ink);transform:translate(-50%,-50%);z-index:2}
+.core-label{position:absolute;transform:translate(0,14px);font-family:var(--label);font-weight:600;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
+.planet{position:absolute;z-index:3;transform:translate(-50%,-100%);display:block;text-align:left;padding:4px 0 6px;min-width:120px;
+  background:var(--paper);border:0;border-bottom:1.5px solid var(--ink);border-radius:0;text-decoration:none;color:var(--ink);cursor:pointer;font:inherit}
+.planet b{display:block;font-family:var(--display);font-weight:400;font-size:26px;font-size:clamp(17px,4.2cqw,26px);line-height:1;white-space:nowrap}
+.planet small{display:block;margin-top:3px;font-family:var(--label);font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+.planet[data-align="below"]{transform:translate(0,0);border-bottom:0;border-top:1.5px solid var(--ink);padding:6px 0 4px}
+.planet[data-align="right"]{transform:translate(0,-100%)}
+.planet[data-align="left"]{transform:translate(-100%,-100%);text-align:right}
+@container (max-width:600px){.planet small{display:none}.planet{min-width:0}}
+.planet.p1{border-bottom:2.5px solid var(--orange-line)}
+.planet.p1 small{color:var(--orange-ink)}
+.planet:hover b,.planet:focus-visible b{font-style:italic}
+.planet{transition:background-color 160ms ease}
+.planet:hover,.planet:focus-visible{background:var(--paper-hi)}
+
+/* ---------- subject index ---------- */
+.subjects{display:grid;border-top:1px solid var(--ink);counter-reset:subj}
+.subject-card{counter-increment:subj;display:grid;grid-template-columns:90px minmax(0,3fr) minmax(0,4fr) 250px;align-items:baseline;gap:0 24px;padding:22px 0;
+  border:0;border-bottom:1px solid var(--rule);background:transparent;color:var(--ink);text-align:left;text-decoration:none;cursor:pointer;font:inherit;width:100%;border-radius:0}
+.subject-card::before{content:counter(subj,decimal-leading-zero);font-family:var(--mono);font-size:14px;color:var(--ink-3)}
+.subject-card h3{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(36px,4vw,58px);line-height:.95;letter-spacing:-.02em}
+.subject-card p{margin:0;font-size:16px;line-height:1.5;color:var(--ink-2)}
+.card-foot{display:flex;align-items:baseline;gap:16px;justify-content:flex-end;font-family:var(--label);font-weight:600;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+.card-foot span:last-child{font-family:var(--font);font-size:22px;letter-spacing:0;color:var(--ink)}
+a.subject-card .card-foot span:first-child{color:var(--ink);box-shadow:inset 0 -8px 0 var(--lime)}
+.subject-card{transition:background-color 180ms ease}
+.subject-card:hover{background:var(--paper-hi)}
+.subject-card:hover h3{font-style:italic}
+.empty{margin:18px 0 0;font-family:var(--display);font-style:italic;font-size:24px;color:var(--ink-2)}
+.empty[hidden],.subject-card[hidden]{display:none!important}
+
+/* ---------- philosophy ---------- */
+.principles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;border-top:1px solid var(--ink)}
+.principle{display:grid;grid-template-columns:56px minmax(0,1fr);gap:0 16px;padding:22px 0 26px;border-bottom:1px solid var(--rule)}
+.principle .pn{font-family:var(--mono);font-size:14px;color:var(--ink-3);padding-top:10px}
+.principle h3{margin:0 0 8px;font-family:var(--display);font-weight:400;font-size:clamp(30px,3vw,42px);line-height:1}
+.principle h3 em{font-style:italic}
+.principle p{margin:0;max-width:52ch;font-size:16px;line-height:1.55;color:var(--ink-2)}
+
+/* ---------- workflow: the five lesson stages on one trajectory ---------- */
+.method{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0 24px;padding-top:70px}
+.method-arc{position:absolute;left:0;right:0;top:0;height:70px;width:100%;overflow:visible;pointer-events:none}
+.method-arc path{fill:none;stroke:var(--orange-line);stroke-width:2}
+.method-arc circle{fill:var(--paper-hi);stroke:var(--ink);stroke-width:1.2}
+html.motion .method-arc path{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1100ms cubic-bezier(.3,.6,.2,1)}
+html.motion .method-arc circle{opacity:0;transition:opacity 240ms ease;transition-delay:var(--d,0ms)}
+html.motion .method-arc.in path{stroke-dashoffset:0}
+html.motion .method-arc.in circle{opacity:1}
+.method-card{padding:18px 0 0;border-top:1px solid var(--ink)}
+.stepnum{font-family:var(--mono);font-size:14px;color:var(--ink-3)}
+.method-card h3{margin:14px 0 10px;font-family:var(--display);font-weight:400;font-size:clamp(28px,2.4vw,38px);line-height:1}
+.method-card p{margin:0;font-size:15px;line-height:1.55;color:var(--ink-2)}
+.method-note{margin:22px 0 0;font-family:var(--mono);font-size:13px;color:var(--ink-3)}
+
+/* ---------- potential / roadmap ---------- */
+.roadmap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 28px;border-top:1px solid var(--ink)}
+.lane{padding:18px 0 0}
+.lane h3{margin:0 0 12px;font-family:var(--label);font-weight:600;font-size:14px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.lane ul{list-style:none;margin:0;padding:0}
+.lane li{padding:10px 0;border-bottom:1px solid var(--rule);font-family:var(--display);font-size:24px;line-height:1.15}
+.lane li small{display:block;margin-top:2px;font-family:var(--font);font-size:14px;line-height:1.45;color:var(--ink-2)}
+.lane.now li{box-shadow:inset 3px 0 0 var(--orange);padding-left:14px}
+.lane.ideas li{font-style:italic}
+
+/* ---------- call to action ---------- */
+.cta-band{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:0 28px;align-items:end;margin:70px 0 0;padding:34px 0 40px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.cta-band > div{grid-column:1 / span 8}
+.cta-band h2{text-wrap:balance;margin:0;font-family:var(--display);font-weight:400;font-size:clamp(46px,6.4vw,100px);line-height:.88;letter-spacing:-.03em}
+.cta-band p{margin:14px 0 0;font-size:17px;color:var(--ink-2)}
+.cta-band .primary{grid-column:9 / span 4;justify-self:end;background:var(--orange);color:var(--ink);border-color:var(--ink);font-size:16px;padding:14px 22px}
+.cta-band .primary:hover{background:var(--ink);color:var(--orange)}
+
+/* ---------- responsive ---------- */
+@media(max-width:1100px){
+  .method{grid-template-columns:repeat(2,minmax(0,1fr));padding-top:0;row-gap:26px}
+  .method-arc{display:none}
+}
+@media(max-width:980px){
+  .hero,.section-head,.cta-band{grid-template-columns:minmax(0,1fr)}
+  .hero-copy,.universe{grid-column:1 / -1}
+  .universe{margin-top:30px;max-width:640px}
+  .section-head > div,.section-head > p{grid-column:1 / -1}
+  .section-head > p{margin-top:12px}
+  .subject-card{grid-template-columns:56px minmax(0,1fr) auto;row-gap:6px}
+  .subject-card p{grid-column:2 / span 2}
+  .subject-card .card-foot{grid-column:3;grid-row:1}
+  .principles,.roadmap{grid-template-columns:minmax(0,1fr)}
+  .cta-band > div,.cta-band .primary{grid-column:1 / -1}
+  .cta-band .primary{justify-self:start;margin-top:22px}
+}
+@media(max-width:640px){
+  .hero{padding-top:28px}
+  .hero h1{font-size:clamp(52px,15vw,74px)}
+  .hero p{font-size:17px}
+  .core-label{font-size:11px;letter-spacing:.06em;margin-left:-8px}
+  .plate .note{display:none}
+  .method{grid-template-columns:minmax(0,1fr)}
+  .subject-card{grid-template-columns:40px minmax(0,1fr);padding:18px 0}
+  .subject-card .card-foot{grid-column:2;grid-row:auto;justify-content:flex-start}
+  .subject-card p{grid-column:2}
+  .principle{grid-template-columns:36px minmax(0,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="top">
+<header class="nav reveal-fade">
+  <a class="brand" href="index.html" aria-current="page"><span class="brandmark" aria-hidden="true"></span>ExamiQ</a>
+  <nav class="navlinks" aria-label="Sections"><a href="#subjects">Subjects</a><a href="#philosophy">Philosophy</a><a href="#how">How it works</a><a href="#potential">Potential</a></nav>
+  <a class="navcta" href="physics.html">Open Physics <span class="go-arrow" aria-hidden="true">↗</span></a>
+  <button class="menu" id="menuButton" aria-label="Open navigation" aria-controls="mobileNav" aria-expanded="false">☰</button>
+</header>
+<nav id="mobileNav" class="mobile-nav" aria-label="Sections (mobile)"><a href="#subjects">Subjects</a><a href="#philosophy">Philosophy</a><a href="#how">How it works</a><a href="#potential">Potential</a><a href="physics.html">Open Physics ↗</a></nav>
+
+<main>
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow reveal"><i class="pulse" aria-hidden="true"></i> A new universe for understanding</span>
+    <h1 class="reveal" style="--d:60ms">Don't just learn it. <span class="gradient reveal" style="--d:140ms">Understand it.</span></h1>
+    <p class="reveal" style="--d:200ms">Predict what will happen, test it, watch it, then explain it from memory. Learning should feel like discovery.</p>
+    <div class="search reveal" style="--d:260ms" role="search">
+      <div class="searchbox">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input id="topicSearch" type="search" placeholder="Search a subject or topic…" aria-label="Search subjects and topics" aria-controls="searchResults" aria-describedby="searchStatus" autocomplete="off">
+        <button onclick="document.querySelector('#subjects').scrollIntoView({behavior:'smooth'})">Explore</button>
+      </div>
+      <ul class="results" id="searchResults" aria-label="Search results" hidden></ul>
+      <div class="search-status" id="searchStatus" aria-live="polite">Try “physics”, “projectile” or “biology”.</div>
+    </div>
+  </div>
+
+  <!-- The learning universe as a launch plate: one launch point (ExamiQ), four trajectories, four subjects. -->
+  <div class="universe" id="universe" aria-label="Four subjects drawn as trajectories launched from ExamiQ">
+    <svg class="plate" id="plate" viewBox="0 120 600 400" preserveAspectRatio="none" aria-hidden="true" focusable="false"></svg>
+    <div class="core"></div><div class="core-label">ExamiQ · launch</div>
+    <a class="planet p1" href="physics.html"><b>Physics</b><small>Explore motion &amp; energy</small></a>
+    <button class="planet chem p2" data-coming="Chemistry"><b>Chemistry</b><small>Coming soon</small></button>
+    <button class="planet math p3" data-coming="Mathematics"><b>Mathematics</b><small>Coming soon</small></button>
+    <button class="planet bio p4" data-coming="Biology"><b>Biology</b><small>Coming soon</small></button>
+  </div>
+</section>
+
+<section class="section" id="subjects">
+  <div class="section-head"><div><div class="kicker">Find your next orbit</div><h2>Explore the universe.</h2></div><p>Choose a subject and follow your curiosity. Physics is open now; the others are being built.</p></div>
+  <div class="subjects">
+    <a class="subject-card" href="physics.html" data-search="physics mechanics projectile motion velocity acceleration force energy"><h3>Physics</h3><p>See the rules behind how the world moves.</p><div class="card-foot"><span>1 topic available</span><span class="go-arrow" aria-hidden="true">↗</span></div></a>
+    <button class="subject-card" data-search="chemistry matter atoms reactions bonding" data-coming="Chemistry"><h3>Chemistry</h3><p>Discover the building blocks of matter.</p><div class="card-foot"><span>Coming soon</span><span aria-hidden="true">·</span></div></button>
+    <button class="subject-card" data-search="mathematics algebra geometry calculus patterns" data-coming="Mathematics"><h3>Mathematics</h3><p>Find the patterns and logic behind problems.</p><div class="card-foot"><span>Coming soon</span><span aria-hidden="true">·</span></div></button>
+    <button class="subject-card" data-search="biology cells life genetics evolution ecology" data-coming="Biology"><h3>Biology</h3><p>Understand how living systems grow, adapt and interact.</p><div class="card-foot"><span>Coming soon</span><span aria-hidden="true">·</span></div></button>
+  </div>
+  <p id="emptyState" class="empty" hidden>No matching subjects yet. Try “Physics” or “motion”.</p>
+</section>
+
+<section class="section" id="philosophy">
+  <div class="section-head"><div><div class="kicker">Philosophy</div><h2>Think first. Then look.</h2></div><p>ExamiQ is built on a few simple commitments about how understanding forms, and every lesson is designed around them.</p></div>
+  <div class="principles">
+    <div class="principle"><span class="pn">01</span><div><h3>Commit to a <em>prediction</em>.</h3><p>Every lesson starts by asking what you think will happen, before anything is shown. A guess gives the result something to confirm or overturn.</p></div></div>
+    <div class="principle"><span class="pn">02</span><div><h3>Mistakes are <em>data</em>.</h3><p>A wrong prediction is not a fail state. You still launch, still watch, and the gap between what you expected and what happened is where the lesson is.</p></div></div>
+    <div class="principle"><span class="pn">03</span><div><h3>Make the mechanism <em>visible</em>.</h3><p>Trajectories, vectors and live readouts show why a result happens, not just the answer, and you can change the conditions yourself.</p></div></div>
+    <div class="principle"><span class="pn">04</span><div><h3>Prove it to <em>yourself</em>.</h3><p>Recall the principle without the simulation in front of you, then apply it to a situation you have not seen before.</p></div></div>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="section-head"><div><div class="kicker">The learning workflow</div><h2>Five stages, one arc.</h2></div><p>This is the loop the Projectile Motion lesson runs today, and the template for every lesson that follows.</p></div>
+  <div class="method">
+    <svg class="method-arc" id="methodArc" aria-hidden="true" focusable="false"></svg>
+    <div class="method-card"><div class="stepnum">01 / PREDICT</div><h3>Commit.</h3><p>Choose the launch angle you think gives the longest range, before seeing anything.</p></div>
+    <div class="method-card"><div class="stepnum">02 / OBSERVE</div><h3>Test it.</h3><p>Launch your angle and at least one other, and compare where each one lands.</p></div>
+    <div class="method-card"><div class="stepnum">03 / SPATIAL LAB</div><h3>Explore.</h3><p>Change speed, angle, aim and air resistance in a 3-D lab and watch the path respond.</p></div>
+    <div class="method-card"><div class="stepnum">04 / RECALL</div><h3>Remember.</h3><p>Answer a question on the key principle from memory, with feedback on your choice.</p></div>
+    <div class="method-card"><div class="stepnum">05 / TRANSFER</div><h3>Apply.</h3><p>A bonus challenge puts the same idea into a new situation.</p></div>
+  </div>
+</section>
+
+<section class="section" id="potential">
+  <div class="section-head"><div><div class="kicker">Potential</div><h2>Where this goes.</h2></div><p>One lesson is real today. The rest is a plan, and it is labelled as one.</p></div>
+  <div class="roadmap">
+    <div class="lane now"><h3>Available now</h3><ul><li>Projectile Motion<small>Physics · all five stages, offline</small></li></ul></div>
+    <div class="lane"><h3>Next in Physics</h3><ul><li>Motion in a Plane<small>Coming soon</small></li><li>Laws of Motion<small>Coming soon</small></li><li>Work, Energy and Power<small>Coming soon</small></li></ul></div>
+    <div class="lane ideas"><h3>Further out · ideas, not built</h3><ul><li>Chemistry<small>e.g. predict a reaction outcome, then run it</small></li><li>Mathematics<small>e.g. guess a graph's shape, then move its parameters</small></li><li>Biology<small>e.g. forecast a population, then change the conditions</small></li></ul></div>
+  </div>
+</section>
+
+<section class="cta-band" id="about">
+  <div><h2>Curiosity is a good place to start.</h2><p>Open Physics and pick up the Projectile Motion lesson.</p></div>
+  <a class="primary" href="physics.html">Explore Physics <span class="go-arrow" aria-hidden="true">↗</span></a>
+</section>
+</main>
+
+<footer class="footer"><a class="brand" href="#top"><span class="brandmark" aria-hidden="true"></span>ExamiQ</a><span>Built for understanding, not just memorisation.</span><a href="#top">Back to top ↑</a></footer>
+</div>
+<dialog id="notice" aria-labelledby="noticeTitle"><h3 id="noticeTitle"></h3><p></p><button id="closeNotice">Got it</button></dialog>
+
+<script>
+/*__MOTION__*/
+</script>
+<script>
+/* ---- original homepage behaviour: subject filter, coming-soon dialog, mobile menu ---- */
+const search = document.querySelector('#topicSearch');
+const cards = [...document.querySelectorAll('.subject-card')];
+const empty = document.querySelector('#emptyState');
+search?.addEventListener('input', () => {
+  const q = search.value.trim().toLowerCase(); let visible=0;
+  cards.forEach(card => { const match = (card.dataset.search || card.innerText).toLowerCase().includes(q); card.hidden=!match; if(match) visible++; });
+  empty.hidden = visible !== 0;
+});
+const dialog = document.querySelector('#notice');
+function showComing(name, kind) {
+  dialog.querySelector('h3').textContent = name + ' is on the horizon';
+  dialog.querySelector('p').textContent = kind === 'topic'
+    ? 'This Physics topic is planned but not built yet. Projectile Motion is playable now from the Physics page.'
+    : 'This subject is part of the ExamiQ universe. Its interactive lessons are planned next; Physics is playable now.';
+  dialog.showModal();
+}
+document.querySelectorAll('[data-coming]').forEach(btn => btn.addEventListener('click', () => showComing(btn.dataset.coming, 'subject')));
+document.querySelector('#closeNotice')?.addEventListener('click', () => dialog.close());
+document.querySelector('#menuButton')?.addEventListener('click', () => {
+  const nav = document.querySelector('#mobileNav');
+  nav.classList.toggle('open');
+  document.querySelector('#menuButton').setAttribute('aria-expanded', String(nav.classList.contains('open')));
+});
+
+/* ---- search results: only real destinations are links; everything else is marked "coming soon" ----
+   Physics topics lead to the Physics page (never straight into a lesson), as the three-layer rule requires. */
+(() => {
+  const INDEX = [
+    { title: 'Physics', type: 'Subject', href: 'physics.html', keys: 'physics mechanics motion force energy velocity acceleration kinematics' },
+    { title: 'Projectile Motion', type: 'Physics topic · opens Physics', href: 'physics.html#topic-projectile-motion', keys: 'projectile motion trajectory range angle launch parabola throw kinematics 45' },
+    { title: 'Motion in a Plane', type: 'Physics topic', coming: 'topic', keys: 'motion in a plane vectors relative velocity circular two dimensions 2d' },
+    { title: 'Laws of Motion', type: 'Physics topic', coming: 'topic', keys: 'laws of motion newton force friction momentum inertia' },
+    { title: 'Work, Energy and Power', type: 'Physics topic', coming: 'topic', keys: 'work energy power kinetic potential conservation' },
+    { title: 'Chemistry', type: 'Subject', coming: 'subject', keys: 'chemistry matter atoms reactions bonding molecules' },
+    { title: 'Mathematics', type: 'Subject', coming: 'subject', keys: 'mathematics maths math algebra geometry calculus patterns' },
+    { title: 'Biology', type: 'Subject', coming: 'subject', keys: 'biology cells life genetics evolution ecology' }
+  ];
+  const list = document.getElementById('searchResults');
+  const status = document.getElementById('searchStatus');
+  const hint = status.textContent;
+  const match = (q, item) => {
+    const hay = (item.title + ' ' + item.keys).toLowerCase();
+    return q.split(/\s+/).every(t => hay.includes(t));
+  };
+  const render = () => {
+    const q = search.value.trim().toLowerCase();
+    list.innerHTML = '';
+    if (!q) { list.hidden = true; status.textContent = hint; return; }
+    const hits = INDEX.filter(i => match(q, i)).sort((a, b) => (!!a.coming) - (!!b.coming));
+    hits.forEach(item => {
+      const li = document.createElement('li');
+      const el = document.createElement(item.coming ? 'button' : 'a');
+      el.className = 'result';
+      if (item.coming) { el.type = 'button'; el.addEventListener('click', () => showComing(item.title, item.coming)); }
+      else el.href = item.href;
+      el.innerHTML = '<b></b><span class="r-type"></span><span class="r-state"></span>';
+      el.querySelector('b').textContent = item.title;
+      el.querySelector('.r-type').textContent = item.type;
+      el.querySelector('.r-state').textContent = item.coming ? 'Coming soon' : 'Open ↗';
+      li.appendChild(el); list.appendChild(li);
+    });
+    list.hidden = hits.length === 0;
+    const live = hits.filter(h => !h.coming).length;
+    status.textContent = hits.length === 0 ? 'Nothing matches yet. Try “physics” or “projectile”.'
+      : `${hits.length} result${hits.length > 1 ? 's' : ''}, ${live} available now.` + (live ? ' Press Enter to open the first.' : '');
+  };
+  search.addEventListener('input', render);
+  search.addEventListener('keydown', e => {
+    const items = [...list.querySelectorAll('.result')];
+    if (e.key === 'Enter') { const first = list.querySelector('a.result'); if (first) { e.preventDefault(); first.click(); } }
+    else if (e.key === 'ArrowDown' && items.length) { e.preventDefault(); items[0].focus(); }
+  });
+  list.addEventListener('keydown', e => {
+    const items = [...list.querySelectorAll('.result')], i = items.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown' && i < items.length - 1) { e.preventDefault(); items[i + 1].focus(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); (i > 0 ? items[i - 1] : search).focus(); }
+    else if (e.key === 'Escape') { search.focus(); }
+  });
+  render();
+})();
+
+/* ---- KINETIC MATTER launch plate ----
+   Real projectile geometry: every trajectory starts at the same point with the same speed; only the angle differs.
+   R = u²·sin2θ/g and H = u²·sin²θ/2g, drawn at one uniform scale, so the u vector is tangent to the path.
+   Motion: on load the four subjects are launched as a salvo. Each ball moves with real kinematics
+   (x ∝ t, y parabolic, flight time ∝ sinθ) and traces its own path; a subject's rule draws in when its ball
+   reaches the apex. The salvo ends after ~3 s; hovering or focusing a subject relaunches only that ball. */
+(() => {
+  const svg = document.getElementById('plate');
+  const uni = document.getElementById('universe');
+  if (!svg || !uni) return;
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const O = { x: 46, y: 452 };               // launch point (plate units)
+  const K = 252;                             // u²/g in plate units (same speed for every launch)
+  const S = 2.05;                            // one uniform plate scale
+  const SECONDS_PER_UNIT = 1450;             // display ms per unit of u/g, so T(45°) ≈ 2.05 s
+  const routes = [
+    { key: 'physics', angle: 45, live: true, sel: '.planet.p1', align: 'center', origin: '50%', delay: 0 },
+    { key: 'chemistry', angle: 60, sel: '.planet.p2', align: 'right', origin: '0%', delay: 180 },
+    { key: 'mathematics', angle: 75, sel: '.planet.p3', align: 'left', origin: '100%', delay: 360 },
+    { key: 'biology', angle: 20, sel: '.planet.p4', align: 'below', origin: '0%', delay: 540 }
+  ];
+  const rad = d => d * Math.PI / 180;
+  const range = a => K * Math.sin(2 * rad(a)) * S;
+  const yAt = (a, x) => { const R = range(a), H = K * Math.sin(rad(a)) ** 2 / 2 * S; return 4 * H * (x / R) * (1 - x / R); };
+  const pt = (a, x) => ({ x: O.x + x, y: O.y - yAt(a, x) });
+  let html = `<defs>${routes.map(r => `<clipPath id="trace-${r.key}"><rect class="trace" x="${O.x - 24}" y="0" width="${ExamiQMotion.reduced ? 700 : 0}" height="600" /></clipPath>`).join('')}</defs>`;
+  html += `<line class="ground" x1="${O.x - 20}" y1="${O.y}" x2="590" y2="${O.y}" />`;
+  for (let x = 0; x <= 520; x += 104) html += `<line class="tick" x1="${O.x + x}" y1="${O.y}" x2="${O.x + x}" y2="${O.y + 7}" />`;
+  routes.forEach(r => {
+    const R = range(r.angle); let d = '';
+    for (let i = 0; i <= 80; i++) { const p = pt(r.angle, R * i / 80); d += `${i ? 'L' : 'M'} ${p.x.toFixed(1)} ${p.y.toFixed(1)} `; }
+    r.R = R; r.apex = pt(r.angle, R / 2); r.land = pt(r.angle, R);
+    r.duration = 2 * Math.sin(rad(r.angle)) * SECONDS_PER_UNIT;            // T = 2u·sinθ/g
+    html += `<path class="path${r.live ? ' live' : ''}" data-key="${r.key}" clip-path="url(#trace-${r.key})" d="${d}" />`;
+    if (r.live) {
+      for (let i = 1; i < 12; i++) { const p = pt(r.angle, R * i / 12); html += `<circle class="dot strobe" data-f="${(i / 12).toFixed(4)}" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4" />`; }
+      const ux = Math.cos(rad(r.angle)) * 54, uy = Math.sin(rad(r.angle)) * 54;
+      html += `<line class="vec" x1="${O.x}" y1="${O.y}" x2="${(O.x + ux).toFixed(1)}" y2="${(O.y - uy).toFixed(1)}" />` +
+        `<text class="mono" x="${(O.x + ux - 16).toFixed(1)}" y="${(O.y - uy - 4).toFixed(1)}" fill="#1F3BFF">u</text>`;
+    }
+    if (r.align === 'below')   // low arc: label sits under the ground, joined by an apex-height drop line
+      html += `<line class="drop" data-key="${r.key}" x1="${r.apex.x.toFixed(1)}" y1="${r.apex.y.toFixed(1)}" x2="${r.apex.x.toFixed(1)}" y2="${(O.y + 10).toFixed(1)}" />`;
+    html += `<circle class="dot" cx="${r.land.x.toFixed(1)}" cy="${r.land.y.toFixed(1)}" r="${r.live ? 5 : 3.5}" />`;
+  });
+  html += `<text class="note" x="590" y="140" text-anchor="end">same launch speed · different angles</text>`;
+  svg.innerHTML = html;
+
+  const VB = { y: 120, h: 400 };            // must match the svg viewBox; the box aspect-ratio matches it too
+  const pct = p => ({ left: (p.x / 600 * 100) + '%', top: ((p.y - VB.y) / VB.h * 100) + '%' });
+  Object.assign(uni.querySelector('.core').style, pct(O));
+  Object.assign(uni.querySelector('.core-label').style, { left: (O.x / 600 * 100 + 2) + '%', top: ((O.y - VB.y) / VB.h * 100) + '%' });
+
+  const strobes = [...svg.querySelectorAll('.strobe')];
+  routes.forEach(r => {
+    r.el = uni.querySelector(r.sel);
+    r.path = svg.querySelector(`.path[data-key="${r.key}"]`);
+    r.clip = svg.querySelector(`#trace-${r.key} rect`);
+    if (!r.el) return;
+    Object.assign(r.el.style, pct(r.align === 'below' ? { x: r.apex.x - 2, y: O.y + 10 } : { x: r.apex.x, y: r.apex.y - 6 }));
+    r.el.dataset.align = r.align;
+    r.el.style.setProperty('--o', r.origin);
+    const hot = on => r.path && r.path.classList.toggle('is-hot', on);
+    ['mouseenter', 'focus'].forEach(ev => r.el.addEventListener(ev, () => { hot(true); fly(r, 0); }));
+    ['mouseleave', 'blur'].forEach(ev => r.el.addEventListener(ev, () => hot(false)));
+  });
+
+  // One flight: a ball on the true trajectory; the path is revealed up to the ball's x (vx is constant, so the
+  // trace advances at a steady horizontal rate, exactly as the physics says). Returns immediately when reduced.
+  function fly(r, delay) {
+    if (ExamiQMotion.reduced || r.flying) { if (ExamiQMotion.reduced) r.el && r.el.classList.add('lit'); return; }
+    r.flying = true;
+    const ball = document.createElementNS(SVGNS, 'circle');
+    ball.setAttribute('class', 'ball' + (r.live ? ' live' : '')); ball.setAttribute('r', r.live ? 6 : 4.5);
+    ball.setAttribute('cx', O.x); ball.setAttribute('cy', O.y); ball.style.opacity = '0';
+    svg.appendChild(ball);
+    setTimeout(() => {
+      ball.style.opacity = '1';
+      ExamiQMotion.play(r.duration, f => {
+        const x = r.R * f, p = pt(r.angle, x);
+        ball.setAttribute('cx', p.x.toFixed(2)); ball.setAttribute('cy', p.y.toFixed(2));
+        if (r.clip && +r.clip.getAttribute('width') < 24 + x + 6) r.clip.setAttribute('width', (24 + x + 6).toFixed(1));
+        if (r.live) strobes.forEach(s => { if (f >= +s.dataset.f) s.style.opacity = '1'; });
+        if (f >= 0.5 && r.el) r.el.classList.add('lit');                 // the subject is "discovered" at the apex
+      }, () => {
+        if (r.clip) r.clip.setAttribute('width', '700');
+        ball.style.transition = 'opacity 400ms ease'; ball.style.opacity = '0';
+        setTimeout(() => { ball.remove(); r.flying = false; }, 420);
+      });
+    }, delay);
+  }
+  if (!ExamiQMotion.reduced) strobes.forEach(s => { s.style.opacity = '0'; });
+  routes.forEach(r => fly(r, 250 + r.delay));                   // the load salvo starts with the hero reveal
+  setTimeout(() => routes.forEach(r => { r.el && r.el.classList.add('lit'); if (r.clip) r.clip.setAttribute('width', '700'); }), 5000); // safety net
+
+  // Workflow: the five stages sit on one arc whose ends land on the first and last step rules.
+  // It draws itself once, the first time the section scrolls into view.
+  const m = document.getElementById('methodArc');
+  const drawMethod = () => {
+    if (!m || getComputedStyle(m).display === 'none') return;
+    const box = m.getBoundingClientRect(), W = box.width || 1000, H = 70;
+    m.setAttribute('viewBox', `0 0 ${W.toFixed(0)} ${H}`);
+    const xs = [...m.parentElement.querySelectorAll('.method-card')].map(c => c.getBoundingClientRect().left - box.left + 1);
+    const x0 = xs[0], x1 = W - 1;
+    const y = x => H - (H - 12) * 4 * ((x - x0) / (x1 - x0)) * (1 - (x - x0) / (x1 - x0));
+    let d = ''; for (let i = 0; i <= 80; i++) { const x = x0 + (x1 - x0) * i / 80; d += `${i ? 'L' : 'M'} ${x.toFixed(1)} ${y(x).toFixed(1)} `; }
+    m.innerHTML = `<path pathLength="1" d="${d}" />` + xs.map((x, i) => `<circle style="--d:${(150 + 900 * (x - x0) / (x1 - x0)).toFixed(0)}ms" cx="${x.toFixed(1)}" cy="${y(x).toFixed(1)}" r="5" />`).join('');
+  };
+  drawMethod();
+  if ('ResizeObserver' in window) new ResizeObserver(drawMethod).observe(m);
+  ExamiQMotion.once(m, () => m.classList.add('in'), 0.6);
+})();
+</script>
+</body>
+</html>

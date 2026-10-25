@@ -1,0 +1,8 @@
+Fonts embedded in projectile-motion.html (base64 WOFF, so the page needs no network):
+
+1. Instrument Serif, Regular and Italic: subset to Latin + symbols. Copyright 2022 The Instrument Serif
+   Project Authors. SIL Open Font License 1.1 (OFL-InstrumentSerif.txt).
+2. Barlow Condensed, Medium 500 and SemiBold 600: subset. Copyright 2017 The Barlow Project Authors.
+   SIL Open Font License 1.1 (OFL-BarlowCondensed.txt).
+3. "ExamiQ Mono", Regular 400 and Medium 500: a subset of IBM Plex Mono, renamed because "Plex" is a
+   Reserved Font Name under the SIL Open Font License 1.1. Copyright 2017 IBM Corp. (OFL-IBMPlexMono.txt).

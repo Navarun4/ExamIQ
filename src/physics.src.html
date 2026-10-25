@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#EEE9DF">
+<meta name="description" content="ExamiQ Physics: choose a topic. Projectile Motion is available now.">
+<title>ExamiQ — Physics</title>
+<style>
+/* ExamiQ · Layer 2 (Physics subject page) · KINETIC MATTER. Fonts: SIL Open Font License 1.1, embedded. */
+/*__FONTS__*/
+/*__BASE__*/
+
+.crumbs{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 0 0}
+.crumbs ol{display:flex;gap:10px;list-style:none;margin:0;padding:0;font-family:var(--label);font-weight:600;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.crumbs li+li::before{content:"/";margin-right:10px;color:var(--rule)}
+.crumbs a{text-decoration:none;color:var(--ink-2)}
+.crumbs a:hover{box-shadow:inset 0 -2px 0 var(--orange)}
+.crumbs [aria-current]{color:var(--ink)}
+.back-home{font-family:var(--label);font-weight:600;font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;border-bottom:2px solid var(--ink);padding:4px 0 2px}
+.back-home:hover{border-bottom-color:var(--orange)}
+
+/* hero */
+.p-hero{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:0 28px;align-items:end;padding:34px 0 34px}
+.p-hero-copy{grid-column:1 / span 5}
+.p-hero h1{margin:14px 0 0;font-family:var(--display);font-weight:400;font-size:clamp(76px,11vw,168px);line-height:.82;letter-spacing:-.04em}
+.p-hero h1 em{display:block;margin-top:.14em;font-size:.36em;line-height:1;letter-spacing:-.02em;color:var(--ink-2)}
+.p-hero p{margin:22px 0 0;max-width:42ch;font-size:18px;line-height:1.55;color:var(--ink-2)}
+.p-hero .start{margin-top:26px}
+.figure{grid-column:6 / span 7;margin:0}
+.figure svg{display:block;width:100%;height:auto;overflow:visible}
+.figure figcaption{margin-top:8px;font-family:var(--mono);font-size:13px;color:var(--ink-3)}
+.fig .ground{stroke:var(--ink);stroke-width:1.2}
+.fig .path{fill:none;stroke:var(--orange-line);stroke-width:2.4}
+.fig .mover{fill:var(--orange);stroke:var(--ink);stroke-width:1.4}
+.fig .ball{fill:var(--paper-hi);stroke:var(--ink);stroke-width:1.4}
+.fig .vx{stroke:var(--cobalt);stroke-width:2.2}
+.fig .vy{stroke:var(--cobalt);stroke-width:2.2;stroke-dasharray:5 3}
+.fig .g{stroke:var(--ink);stroke-width:1.4}
+.fig .apex{stroke:var(--ink);stroke-width:1;stroke-dasharray:2 3}
+.fig .lbl{font-family:var(--mono);font-size:15px;fill:var(--ink-2)}
+.fig .lbl-c{font-family:var(--mono);font-size:15px;fill:var(--cobalt)}
+.fig .ann{font-family:var(--display);font-style:italic;font-size:20px;fill:var(--ink)}
+.fig .appear{transition:opacity 260ms ease}
+
+/* topic index */
+.filter{display:flex;align-items:center;gap:12px;max-width:460px;padding:4px 0 4px 2px;border-bottom:2px solid var(--ink);margin:0 0 6px}
+.filter svg{width:18px;flex:none}
+.filter input{min-width:0;flex:1;background:transparent;border:0;color:var(--ink);font:inherit;font-size:17px;padding:10px 4px}
+.filter input::placeholder{color:var(--ink-3)}
+.filter-status{min-height:1.4em;margin:0 0 18px;font-family:var(--mono);font-size:13px;color:var(--ink-3)}
+.topics{display:grid;border-top:1px solid var(--ink);counter-reset:topic}
+.topic-card{counter-increment:topic;display:grid;grid-template-columns:90px minmax(0,3fr) minmax(0,4fr) 230px;align-items:baseline;gap:6px 24px;padding:24px 0 24px 16px;
+  border:0;border-bottom:1px solid var(--rule);background:transparent;color:var(--ink);text-align:left;text-decoration:none;cursor:pointer;font:inherit;width:100%;border-radius:0}
+.topic-card::before{content:counter(topic,decimal-leading-zero);font-family:var(--mono);font-size:14px;color:var(--ink-3)}
+.topic-card h3{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(34px,3.6vw,54px);line-height:.95;letter-spacing:-.02em}
+.topic-card p{margin:0;font-size:16px;line-height:1.5;color:var(--ink-2)}
+.topic-card .stages{grid-column:3;font-family:var(--mono);font-size:13px;color:var(--ink-3)}
+.topic-card .state{grid-column:4;grid-row:1;display:flex;align-items:baseline;gap:14px;justify-content:flex-end;font-family:var(--label);font-weight:600;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+a.topic-card .state span:first-child{color:var(--ink);box-shadow:inset 0 -8px 0 var(--lime)}
+a.topic-card .state span:last-child{font-family:var(--font);font-size:22px;letter-spacing:0;color:var(--ink)}
+a.topic-card{box-shadow:inset 3px 0 0 var(--orange)}
+.topic-card{transition:background-color 180ms ease}
+.topic-card:hover{background:var(--paper-hi)}
+/* topic rows enter once, in order, the first time the list scrolls into view (motion only) */
+html.motion .topics:not(.in) .topic-card{opacity:0}
+html.motion .topics.in .topic-card{animation:rise 440ms cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0) * 70ms)}
+.topic-card:hover h3{font-style:italic}
+.topic-card:target{background:var(--paper-hi);box-shadow:inset 6px 0 0 var(--orange)}
+.topic-card[hidden],.empty[hidden]{display:none!important}
+.empty{margin:18px 0 0;font-family:var(--display);font-style:italic;font-size:24px;color:var(--ink-2)}
+
+/* inside the available lesson */
+.anatomy{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:0 28px;border-top:1px solid var(--ink)}
+.anatomy ol{grid-column:1 / span 7;list-style:none;margin:0;padding:0;counter-reset:st}
+.anatomy li{counter-increment:st;display:grid;grid-template-columns:56px minmax(0,1fr);gap:0 14px;padding:16px 0;border-bottom:1px solid var(--rule)}
+.anatomy li::before{content:counter(st,decimal-leading-zero);font-family:var(--mono);font-size:14px;color:var(--ink-3);padding-top:6px}
+.anatomy li b{display:block;font-family:var(--display);font-weight:400;font-size:28px;line-height:1.05}
+.anatomy li span{font-size:15px;line-height:1.5;color:var(--ink-2)}
+.facts{grid-column:9 / span 4;padding-top:16px}
+.facts dl{margin:0}
+.facts dt{font-family:var(--label);font-weight:600;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-top:16px}
+.facts dt:first-child{margin-top:0}
+.facts dd{margin:4px 0 0;font-size:16px;line-height:1.5;color:var(--ink)}
+.facts .formula{font-family:var(--mono);font-size:15px;background:var(--lime);padding:1px 6px}
+.facts .primary{margin-top:26px}
+
+@media(max-width:980px){
+  .p-hero,.section-head,.anatomy{grid-template-columns:minmax(0,1fr)}
+  .p-hero-copy,.figure,.section-head > div,.section-head > p,.anatomy ol,.facts{grid-column:1 / -1}
+  .figure{margin-top:30px}
+  .section-head > p{margin-top:12px}
+  .facts{padding-top:26px}
+  .topic-card{grid-template-columns:56px minmax(0,1fr) auto}
+  .topic-card p,.topic-card .stages{grid-column:2 / span 2}
+  .topic-card .state{grid-column:3;grid-row:1}
+}
+@media(max-width:640px){
+  .p-hero{padding-top:22px}
+  .topic-card{grid-template-columns:40px minmax(0,1fr);padding:20px 0 20px 12px;gap:6px 14px}
+  .fig .lbl,.fig .lbl-c{font-size:23px}
+  .fig .ann{font-size:27px}
+  .topic-card .state{grid-column:2;grid-row:auto;justify-content:flex-start}
+  .topic-card p,.topic-card .stages{grid-column:2}
+  .anatomy li{grid-template-columns:36px minmax(0,1fr)}
+  .crumbs ol{font-size:13px}
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="top">
+<header class="nav reveal-fade">
+  <a class="brand" href="index.html"><span class="brandmark" aria-hidden="true"></span>ExamiQ</a>
+  <nav class="navlinks" aria-label="Sections"><a href="#topics">Topics</a><a href="#lesson">Inside the lesson</a></nav>
+  <a class="navcta" href="projectile-motion.html">Start Projectile Motion <span class="go-arrow" aria-hidden="true">↗</span></a>
+  <button class="menu" id="menuButton" aria-label="Open navigation" aria-controls="mobileNav" aria-expanded="false">☰</button>
+</header>
+<nav id="mobileNav" class="mobile-nav" aria-label="Sections (mobile)"><a href="#topics">Topics</a><a href="#lesson">Inside the lesson</a><a href="index.html">← ExamiQ Home</a><a href="projectile-motion.html">Start Projectile Motion ↗</a></nav>
+<div class="crumbs">
+  <nav aria-label="Breadcrumb"><ol><li><a href="index.html">ExamiQ</a></li><li><span aria-current="page">Physics</span></li></ol></nav>
+  <a class="back-home" href="index.html">← Back to ExamiQ Home</a>
+</div>
+
+<main>
+<section class="p-hero" aria-labelledby="subjectTitle">
+  <div class="p-hero-copy">
+    <span class="eyebrow reveal"><i class="pulse" aria-hidden="true"></i> Subject 01 · Class 11 Physics</span>
+    <h1 id="subjectTitle" class="reveal" style="--d:60ms">Physics. <em>How things move, and why.</em></h1>
+    <p>In ExamiQ, physics is learned by doing: predict what a system will do, test it in a simulation, then explain it. Projectile Motion is ready now; the other mechanics topics are on their way.</p>
+    <a class="primary start" href="#topics">Choose a topic ↓</a>
+  </div>
+  <figure class="figure">
+    <svg class="fig" id="physicsFig" viewBox="0 0 640 380" role="img" aria-labelledby="figTitle figDesc">
+      <title id="figTitle">One launch, decomposed</title>
+      <desc id="figDesc">A projectile path with velocity components at three moments: the horizontal component stays the same, the vertical component shrinks to zero at the highest point and reverses on the way down, while gravity points down throughout.</desc>
+    </svg>
+    <figcaption>One launch, decomposed: v<sub>x</sub> stays constant, v<sub>y</sub> runs out at the apex, g never changes.</figcaption>
+  </figure>
+</section>
+
+<section class="section" id="topics">
+  <div class="section-head"><div><div class="kicker">Physics topics</div><h2>Choose what to study.</h2></div><p>One topic is fully playable. The rest are planned and marked honestly; none of them lead to an empty page.</p></div>
+  <div class="filter" role="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+    <input id="topicFilter" type="search" placeholder="Filter Physics topics…" aria-label="Filter Physics topics" aria-describedby="filterStatus" autocomplete="off">
+  </div>
+  <p class="filter-status" id="filterStatus" aria-live="polite">4 topics · 1 available now</p>
+  <div class="topics">
+    <a class="topic-card" id="topic-projectile-motion" href="projectile-motion.html" data-search="projectile motion trajectory range angle launch parabola throw kinematics 2d two dimensions">
+      <h3>Projectile Motion</h3>
+      <p>Predict the launch angle that throws farthest, test it, then explore speed, aim and air resistance in a 3-D lab.</p>
+      <span class="stages">Predict → Observe → Spatial Lab → Recall → Transfer</span>
+      <span class="state"><span>Available</span><span class="go-arrow" aria-hidden="true">↗</span></span>
+    </a>
+    <button class="topic-card" type="button" data-coming="Motion in a Plane" data-search="motion in a plane vectors relative velocity circular motion two dimensions 2d">
+      <h3>Motion in a Plane</h3>
+      <p>Vectors, relative velocity and uniform circular motion.</p>
+      <span class="state"><span>Coming soon</span></span>
+    </button>
+    <button class="topic-card" type="button" data-coming="Laws of Motion" data-search="laws of motion newton force friction momentum inertia">
+      <h3>Laws of Motion</h3>
+      <p>Newton's laws, momentum, friction and the forces behind motion.</p>
+      <span class="state"><span>Coming soon</span></span>
+    </button>
+    <button class="topic-card" type="button" data-coming="Work, Energy and Power" data-search="work energy power kinetic potential conservation">
+      <h3>Work, Energy and Power</h3>
+      <p>Kinetic and potential energy, and what stays conserved.</p>
+      <span class="state"><span>Coming soon</span></span>
+    </button>
+  </div>
+  <p id="emptyState" class="empty" hidden>No Physics topic matches that yet. Try “projectile” or “energy”.</p>
+</section>
+
+<section class="section" id="lesson">
+  <div class="section-head"><div><div class="kicker">Inside Projectile Motion</div><h2>What you'll actually do.</h2></div><p>The lesson runs as one connected loop. Recall unlocks only after you have experimented in the lab.</p></div>
+  <div class="anatomy">
+    <ol>
+      <li><div><b>Predict</b><span>Pick the launch angle you think gives the greatest range, before any launch.</span></div></li>
+      <li><div><b>Observe</b><span>Launch at least two angles and compare their landing points, even if your guess was wrong.</span></div></li>
+      <li><div><b>Spatial Lab</b><span>Change launch speed, angle, aim direction and air resistance and watch the 3-D trajectory respond.</span></div></li>
+      <li><div><b>Recall</b><span>Answer a question about the vertical motion at the highest point, with feedback.</span></div></li>
+      <li><div><b>Transfer</b><span>A bonus challenge applies the same principle to a new situation.</span></div></li>
+    </ol>
+    <div class="facts">
+      <dl>
+        <dt>Key relation</dt><dd><span class="formula">R = u²·sin 2θ / g</span></dd>
+        <dt>Works offline</dt><dd>Yes. Everything is inside the page, with no account and no network.</dd>
+        <dt>Progress</dt><dd>Not saved between visits. Each visit starts fresh.</dd>
+      </dl>
+      <a class="primary" href="projectile-motion.html">Start Projectile Motion <span class="go-arrow" aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer"><a class="brand" href="index.html"><span class="brandmark" aria-hidden="true"></span>ExamiQ</a><a href="index.html">← Back to ExamiQ Home</a><a href="#top">Back to top ↑</a></footer>
+</div>
+<dialog id="notice" aria-labelledby="noticeTitle"><h3 id="noticeTitle"></h3><p></p><button id="closeNotice">Got it</button></dialog>
+
+<script>
+/*__MOTION__*/
+</script>
+<script>
+/* ---- topic filter ---- */
+const filter = document.getElementById('topicFilter');
+const topics = [...document.querySelectorAll('.topic-card')];
+const empty = document.getElementById('emptyState');
+const fstatus = document.getElementById('filterStatus');
+const applyFilter = () => {
+  const q = filter.value.trim().toLowerCase();
+  let shown = 0, live = 0;
+  topics.forEach(t => {
+    const hay = (t.dataset.search + ' ' + t.querySelector('h3').textContent).toLowerCase();
+    const ok = !q || q.split(/\s+/).every(w => hay.includes(w));
+    t.hidden = !ok; if (ok) { shown++; if (t.tagName === 'A') live++; }
+  });
+  empty.hidden = shown !== 0;
+  fstatus.textContent = shown === 0 ? 'No matching topics.' : `${shown} topic${shown > 1 ? 's' : ''} · ${live} available now`;
+};
+filter.addEventListener('input', applyFilter);
+filter.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { const first = topics.find(t => !t.hidden && t.tagName === 'A'); if (first) { e.preventDefault(); first.click(); } }
+});
+
+/* ---- coming-soon topics open an explanation, never a broken page ---- */
+const dialog = document.getElementById('notice');
+document.querySelectorAll('[data-coming]').forEach(btn => btn.addEventListener('click', () => {
+  dialog.querySelector('h3').textContent = btn.dataset.coming + ' is coming soon';
+  dialog.querySelector('p').textContent = 'This Physics topic is planned but not built yet. Projectile Motion is playable now.';
+  dialog.showModal();
+}));
+document.getElementById('closeNotice').addEventListener('click', () => dialog.close());
+document.getElementById('menuButton').addEventListener('click', () => {
+  const nav = document.getElementById('mobileNav');
+  nav.classList.toggle('open');
+  document.getElementById('menuButton').setAttribute('aria-expanded', String(nav.classList.contains('open')));
+});
+
+/* Arriving from a homepage search result (physics.html#topic-projectile-motion): move keyboard focus to that topic too. */
+if (location.hash === '#topic-projectile-motion') {
+  const t = document.getElementById('topic-projectile-motion');
+  if (t) { t.scrollIntoView({ block: 'start' }); t.focus({ preventScroll: true }); }
+}
+
+/* ---- hero figure: real kinematics, x = u·cosθ·t, y = u·sinθ·t − g·t²/2 ---- */
+(() => {
+  const svg = document.getElementById('physicsFig');
+  const NS = 'http://www.w3.org/2000/svg';
+  const u = 20, th = 55 * Math.PI / 180, g = 9.8;
+  const T = 2 * u * Math.sin(th) / g, R = u * u * Math.sin(2 * th) / g, H = (u * Math.sin(th)) ** 2 / (2 * g);
+  const O = { x: 40, y: 330 }, s = 560 / R;                         // one scale for x and y
+  const P = t => ({ x: O.x + u * Math.cos(th) * t * s, y: O.y - (u * Math.sin(th) * t - g * t * t / 2) * s });
+  const V = t => ({ vx: u * Math.cos(th), vy: u * Math.sin(th) - g * t });
+  const k = 3.2;                                                     // arrow length per m/s (plate units)
+  let html = `<line class="ground" x1="20" y1="${O.y}" x2="620" y2="${O.y}" />`;
+  let d = ''; for (let i = 0; i <= 90; i++) { const p = P(T * i / 90); d += `${i ? 'L' : 'M'} ${p.x.toFixed(1)} ${p.y.toFixed(1)} `; }
+  html += `<defs><clipPath id="figTrace"><rect x="0" y="0" width="${ExamiQMotion.reduced ? 700 : 0}" height="400" /></clipPath></defs>`;
+  html += `<path class="path" clip-path="url(#figTrace)" d="${d}" />`;
+  const arrow = (x1, y1, x2, y2, cls) => {
+    const a = Math.atan2(y2 - y1, x2 - x1), h = 8;
+    return `<line class="${cls}" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" />` +
+      `<path d="M ${x2.toFixed(1)} ${y2.toFixed(1)} L ${(x2 - h * Math.cos(a - .4)).toFixed(1)} ${(y2 - h * Math.sin(a - .4)).toFixed(1)} L ${(x2 - h * Math.cos(a + .4)).toFixed(1)} ${(y2 - h * Math.sin(a + .4)).toFixed(1)} Z" fill="${cls === 'g' ? '#15130F' : '#1F3BFF'}" />`;
+  };
+  [0.16, 0.5, 0.84].forEach((f, i) => {
+    const t = T * f, p = P(t), v = V(t);
+    let gtxt = `<g class="appear" data-f="${f}">`;
+    gtxt += arrow(p.x, p.y, p.x + v.vx * k, p.y, 'vx');
+    if (Math.abs(v.vy) > 0.5) gtxt += arrow(p.x, p.y, p.x, p.y - v.vy * k, 'vy');
+    gtxt += arrow(p.x - 16, p.y + 10, p.x - 16, p.y + 42, 'g');   // offset left so it never sits on a downward vy
+    gtxt += `<circle class="ball" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="7" />`;
+    gtxt += `<text class="lbl-c" x="${(p.x + v.vx * k + 6).toFixed(1)}" y="${(p.y + 5).toFixed(1)}">vx</text>`;
+    if (Math.abs(v.vy) > 0.5) gtxt += `<text class="lbl-c" x="${(p.x + 6).toFixed(1)}" y="${(p.y - v.vy * k + (v.vy > 0 ? 4 : 14)).toFixed(1)}">vy</text>`;
+    gtxt += `<text class="lbl" x="${(p.x - 34).toFixed(1)}" y="${(p.y + 38).toFixed(1)}" text-anchor="end">g</text>`;
+    if (i === 1) {
+      gtxt += `<line class="apex" x1="${p.x.toFixed(1)}" y1="${(p.y + 10).toFixed(1)}" x2="${p.x.toFixed(1)}" y2="${O.y}" />`;
+      gtxt += `<text class="ann" x="${(p.x + 14).toFixed(1)}" y="${(p.y - 18).toFixed(1)}">vy = 0 at the apex</text>`;
+    }
+    html += gtxt + '</g>';
+  });
+  html += `<text class="lbl" x="${O.x}" y="${O.y + 26}">launch</text><text class="lbl" x="${(O.x + R * s).toFixed(1)}" y="${O.y + 26}" text-anchor="end">landing · R</text>`;
+  svg.insertAdjacentHTML('beforeend', html);
+  // Motion: one flight with real kinematics (rAF timestamps → frame-rate independent). The path is revealed up to
+  // the ball's x, which advances at a constant rate because vx is constant; each velocity snapshot appears when
+  // the ball reaches that moment. Runs once (~2.4 s). Reduced motion: everything is drawn at once.
+  if (!ExamiQMotion.reduced) {
+    const clip = svg.querySelector('#figTrace rect');
+    const snaps = [...svg.querySelectorAll('.appear')];
+    snaps.forEach(g => { g.style.opacity = '0'; });
+    const ball = document.createElementNS(NS, 'circle');
+    ball.setAttribute('class', 'mover'); ball.setAttribute('r', '7'); ball.setAttribute('cx', O.x); ball.setAttribute('cy', O.y);
+    svg.appendChild(ball);
+    setTimeout(() => ExamiQMotion.play(2400, f => {
+      const p = P(T * f);
+      ball.setAttribute('cx', p.x.toFixed(2)); ball.setAttribute('cy', p.y.toFixed(2));
+      clip.setAttribute('width', (p.x + 4).toFixed(1));
+      snaps.forEach(g => { if (f >= +g.dataset.f) g.style.opacity = '1'; });
+    }, () => {
+      clip.setAttribute('width', '700');
+      ball.style.transition = 'opacity 400ms ease'; ball.style.opacity = '0';
+      setTimeout(() => ball.remove(), 420);
+    }), 300);
+  }
+})();
+
+/* ---- topic rows: staggered entrance, once ---- */
+(() => {
+  const list = document.querySelector('.topics');
+  [...list.querySelectorAll('.topic-card')].forEach((c, i) => c.style.setProperty('--i', i));
+  ExamiQMotion.once(list, () => list.classList.add('in'), 0.15);
+})();
+</script>
+</body>
+</html>
